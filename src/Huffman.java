@@ -82,4 +82,33 @@ public class Huffman {
 
         return decodedData.toString();
     }
+
+    public double calculateCompressionFactor() {
+        int originalLength = message.length() * 8; // 8 bits en asciii
+        int encodedLength = 0;
+
+        for (char character : message.toCharArray()) {
+            encodedLength += tableResult.get(character).length();
+        }
+
+        return (double) originalLength / encodedLength;
+    }
+
+    public double calculateEntropy() {
+        int messageLength = message.length();
+        double entropy = 0;
+
+        for (char value : tableResult.keySet()) {
+            int frequency = 0;
+            for (char c : message.toCharArray()) {
+                if (c == value) {
+                    frequency++;
+                }
+            }
+            double probability = (double) frequency / messageLength;
+            entropy += probability * (Math.log(probability) / Math.log(2));
+        }
+
+        return -entropy;
+    }
 }
